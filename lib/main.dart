@@ -16,15 +16,12 @@ class LabourApp extends StatefulWidget {
   State<LabourApp> createState() => _LabourAppState();
 }
 
-class _LabourAppState extends State<LabourApp> {
+class _LabourAppState extends State<LabourApp>
+    with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
+  bool _isWorker = false;
 
-  final List<Widget> _pages = const [
-    HomeScreen(),
-    ServicesScreen(),
-    OrdersScreen(),
-    ProfileScreen(),
-  ];
+  late final AnimationController _fabController;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -33,17 +30,127 @@ class _LabourAppState extends State<LabourApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fabController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+  }
+
+  @override
+  void dispose() {
+    _fabController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onPlusPressed() async {
+    // rotate once
+    await _fabController.forward(from: 0.0);
+
+    // show menu
+    if (!mounted) return;
+    await showModalBottomSheet(
+      context: context,
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.post_add),
+              title: const Text('Create Service'),
+              onTap: () {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Create Service tapped')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.work_outline),
+              title: const Text('Post a Job'),
+              onTap: () {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Post a Job tapped')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.close),
+              title: const Text('Cancel'),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // reverse rotation when closing
+    if (mounted) _fabController.reverse();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pak Labour',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: Scaffold(
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNav(
-          currentIndex: _currentIndex,
-          onTabSelected: _onTabTapped,
-        ),
+      home: Builder(
+        builder: (context) {
+          final pages = [
+            const HomeScreen(),
+            ServicesScreen(isWorker: _isWorker),
+            const OrdersScreen(),
+            ProfileScreen(
+              isWorker: _isWorker,
+              onModeChanged: (v) => setState(() => _isWorker = v),
+            ),
+          ];
+
+          return Scaffold(
+            body: pages[_currentIndex],
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: _isWorker
+                ? RotationTransition(
+                    turns: Tween(begin: 0.0, end: 1.0).animate(
+                      CurvedAnimation(
+                        parent: _fabController,
+                        curve: Curves.easeOut,
+                      ),
+                    ),
+                    child: FloatingActionButton(
+                      onPressed: _onPlusPressed,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: const Icon(Icons.add, size: 32),
+                    ),
+                  )
+                : FloatingActionButton(
+                    onPressed: () async {
+                      // show simple map placeholder
+                      await showModalBottomSheet(
+                        context: context,
+                        builder: (_) => SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: Text(
+                              'Map placeholder - show map here',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    backgroundColor: Colors.green,
+                    child: const Icon(Icons.map, size: 28),
+                  ),
+            bottomNavigationBar: BottomNav(
+              currentIndex: _currentIndex,
+              onTabSelected: _onTabTapped,
+            ),
+          );
+        },
       ),
     );
   }

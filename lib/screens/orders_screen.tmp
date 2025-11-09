@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+
+class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final services = ['Plumbing', 'Electrical', 'Cleaning'];
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Your Services', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.separated(
+                itemCount: services.length,
+                separatorBuilder: (_, __) => const Divider(),
+                itemBuilder: (context, i) => ListTile(
+                  leading: const Icon(Icons.work_outline),
+                  title: Text(services[i]),
+                  subtitle: const Text('Tap to view details'),
+                  onTap: () {},
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

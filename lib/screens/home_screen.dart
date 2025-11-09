@@ -20,8 +20,13 @@ class HomeScreen extends StatelessWidget {
                   Icon(Icons.location_on_outlined, color: Colors.blue),
                   SizedBox(width: 8),
                   Expanded(
-                    child: Text("Lahore, Pakistan",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    child: Text(
+                      "Lahore, Pakistan",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                   Icon(Icons.notifications_outlined),
                 ],
@@ -35,15 +40,30 @@ class HomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: const [
-                  CategoryItem(label: 'Plumber', imagePath: 'assets/images/plumber.png'),
+                  CategoryItem(
+                    label: 'Plumber',
+                    imagePath: 'assets/images/plumber.png',
+                  ),
                   SizedBox(width: 12),
-                  CategoryItem(label: 'Electrician', imagePath: 'assets/images/electrician.png'),
+                  CategoryItem(
+                    label: 'Electrician',
+                    imagePath: 'assets/images/electrician.png',
+                  ),
                   SizedBox(width: 12),
-                  CategoryItem(label: 'Cleaner', imagePath: 'assets/images/cleaner.png'),
+                  CategoryItem(
+                    label: 'Cleaner',
+                    imagePath: 'assets/images/cleaner.png',
+                  ),
                   SizedBox(width: 12),
-                  CategoryItem(label: 'Painter', imagePath: 'assets/images/painter.png'),
+                  CategoryItem(
+                    label: 'Painter',
+                    imagePath: 'assets/images/painter.png',
+                  ),
                   SizedBox(width: 12),
-                  CategoryItem(label: 'Carpenter', imagePath: 'assets/images/carpenter.png'),
+                  CategoryItem(
+                    label: 'Carpenter',
+                    imagePath: 'assets/images/carpenter.png',
+                  ),
                 ],
               ),
             ),
@@ -55,7 +75,10 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset('assets/images/banner.png', fit: BoxFit.cover),
+                child: Image.asset(
+                  'assets/images/banner.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 
@@ -64,8 +87,10 @@ class HomeScreen extends StatelessWidget {
             // Featured Services
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text("Top Rated Workers",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              child: Text(
+                "Top Rated Workers",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -75,9 +100,32 @@ class HomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: const [
-                  ServiceCard(title: "Ali - Plumber", subtitle: "5⭐ (20 Reviews)", imagePath: 'assets/images/plumber.png'),
-                  ServiceCard(title: "Ahmed - Electrician", subtitle: "4.8⭐ (15 Reviews)", imagePath: 'assets/images/electrician.png'),
-                  ServiceCard(title: "Zain - Cleaner", subtitle: "4.9⭐ (10 Reviews)", imagePath: 'assets/images/cleaner.png'),
+                  ServiceCard(
+                    title: "Ali - Plumber",
+                    subtitle: "5⭐ (20 Reviews)",
+                    imagePath: 'assets/images/plumber.png',
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Top Rated Worker',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text('City: Lahore', style: TextStyle(fontSize: 14)),
+                  SizedBox(height: 6),
+                  Text(
+                    'Ali is an experienced plumber who fixes leaks, replaces pipes, and installs faucets. Works: Pipe repair, Faucet installation, Drain cleaning.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
             ),
