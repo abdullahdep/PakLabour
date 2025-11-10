@@ -13,80 +13,75 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorSelected = Theme.of(context).primaryColor;
-    final colorUnselected = Colors.grey;
+    final colorSelected = Theme.of(context).colorScheme.primary;
+    final colorUnselected =
+        Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6) ??
+        Colors.grey;
 
     Widget navIcon(IconData icon, String label, int pageIndex) {
       final isSelected = currentIndex == pageIndex;
-      return Expanded(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => onTabSelected(pageIndex),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    icon,
-                    color: isSelected ? colorSelected : colorUnselected,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: isSelected ? colorSelected : colorUnselected,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
+      return InkWell(
+        onTap: () => onTabSelected(pageIndex),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? colorSelected : colorUnselected,
+                size: 22,
               ),
-            ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? colorSelected : colorUnselected,
+                  fontSize: 11,
+                ),
+              ),
+            ],
           ),
         ),
       );
     }
 
+    // Reserve center space for FAB notch. This avoids fractional widths that may overflow by a pixel.
+    final fabReserve = 72.0; // space reserved for FAB (diameter + margins)
+
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 6.0,
       elevation: 8.0,
+      color: Theme.of(context).cardColor,
       child: SizedBox(
-        height: 60,
+        height: 64,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Left side: Home, Services
-            Row(
-              children: [
-                SizedBox(width: 8),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.38,
-                  child: Row(
-                    children: [
-                      navIcon(Icons.home, 'Home', 0),
-                      navIcon(Icons.build, 'Services', 1),
-                    ],
-                  ),
-                ),
-              ],
+            // left two icons
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  navIcon(Icons.home_outlined, 'Home', 0),
+                  navIcon(Icons.build_outlined, 'Services', 1),
+                ],
+              ),
             ),
 
-            // Right side: Orders, Profile
-            Row(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.38,
-                  child: Row(
-                    children: [
-                      navIcon(Icons.receipt_long, 'Orders', 2),
-                      navIcon(Icons.person_outline, 'Profile', 3),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 8),
-              ],
+            // center spacer for FAB
+            SizedBox(width: fabReserve),
+
+            // right two icons
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  navIcon(Icons.receipt_long_outlined, 'Orders', 2),
+                  navIcon(Icons.person_outline, 'Profile', 3),
+                ],
+              ),
             ),
           ],
         ),

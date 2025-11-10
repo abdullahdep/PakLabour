@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/services_screen.dart';
 import 'screens/orders_screen.dart';
@@ -95,63 +96,76 @@ class _LabourAppState extends State<LabourApp>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pak Labour',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: Builder(
-        builder: (context) {
-          final pages = [
-            const HomeScreen(),
-            ServicesScreen(isWorker: _isWorker),
-            const OrdersScreen(),
-            ProfileScreen(
-              isWorker: _isWorker,
-              onModeChanged: (v) => setState(() => _isWorker = v),
-            ),
-          ];
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black87,
+        ),
+      ),
+      home: const SplashScreen(),
+      routes: {'/home': (context) => _buildMainApp(context)},
+    );
+  }
 
-          return Scaffold(
-            body: pages[_currentIndex],
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: _isWorker
-                ? RotationTransition(
-                    turns: Tween(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: _fabController,
-                        curve: Curves.easeOut,
-                      ),
+  Widget _buildMainApp(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        final pages = [
+          const HomeScreen(),
+          ServicesScreen(isWorker: _isWorker),
+          const OrdersScreen(),
+          ProfileScreen(
+            isWorker: _isWorker,
+            onModeChanged: (v) => setState(() => _isWorker = v),
+          ),
+        ];
+
+        return Scaffold(
+          body: pages[_currentIndex],
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: _isWorker
+              ? RotationTransition(
+                  turns: Tween(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: _fabController,
+                      curve: Curves.easeOut,
                     ),
-                    child: FloatingActionButton(
-                      onPressed: _onPlusPressed,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: const Icon(Icons.add, size: 32),
-                    ),
-                  )
-                : FloatingActionButton(
-                    onPressed: () async {
-                      // show simple map placeholder
-                      await showModalBottomSheet(
-                        context: context,
-                        builder: (_) => SizedBox(
-                          height: 300,
-                          child: Center(
-                            child: Text(
-                              'Map placeholder - show map here',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                  ),
+                  child: FloatingActionButton(
+                    onPressed: _onPlusPressed,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: const Icon(Icons.add, size: 32),
+                  ),
+                )
+              : FloatingActionButton(
+                  onPressed: () async {
+                    // show simple map placeholder
+                    await showModalBottomSheet(
+                      context: context,
+                      builder: (_) => SizedBox(
+                        height: 300,
+                        child: Center(
+                          child: Text(
+                            'Map placeholder - show map here',
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
-                      );
-                    },
-                    backgroundColor: Colors.green,
-                    child: const Icon(Icons.map, size: 28),
-                  ),
-            bottomNavigationBar: BottomNav(
-              currentIndex: _currentIndex,
-              onTabSelected: _onTabTapped,
-            ),
-          );
-        },
-      ),
+                      ),
+                    );
+                  },
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.map, size: 28),
+                ),
+          bottomNavigationBar: BottomNav(
+            currentIndex: _currentIndex,
+            onTabSelected: _onTabTapped,
+          ),
+        );
+      },
     );
   }
 }
