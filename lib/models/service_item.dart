@@ -18,6 +18,10 @@ class ServiceItem {
   bool isCanceled = false;
   String? canceledBy;
 
+  // Acceptance tracking
+  bool isAccepted = false;
+  String? acceptedBy;
+
   ServiceItem({
     required this.id,
     required this.title,

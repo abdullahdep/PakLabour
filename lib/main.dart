@@ -4,6 +4,7 @@ import 'screens/home_screen.dart';
 import 'screens/services_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/profile_screen.dart';
+import 'data/app_store.dart';
 import 'components/bottom_nav.dart';
 
 void main() {
@@ -119,7 +120,10 @@ class _LabourAppState extends State<LabourApp>
           const OrdersScreen(),
           ProfileScreen(
             isWorker: _isWorker,
-            onModeChanged: (v) => setState(() => _isWorker = v),
+            onModeChanged: (v) {
+              setState(() => _isWorker = v);
+              AppStore.isWorkerMode = v; // Sync with AppStore
+            },
           ),
         ];
 

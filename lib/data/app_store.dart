@@ -68,6 +68,16 @@ class AppStore {
     order.canceledBy = isWorkerMode ? workerName : customerName;
   }
 
+  static void acceptOrder(ServiceItem order) {
+    order.isAccepted = true;
+    order.acceptedBy = workerName;
+  }
+
+  static void rejectOrder(ServiceItem order) {
+    order.isCanceled = true;
+    order.canceledBy = 'Worker rejected';
+  }
+
   static Future<Map<String, String>?> _getCustomerInfo(
     BuildContext context,
   ) async {
